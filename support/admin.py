@@ -10,6 +10,12 @@ class FaqModelAdmin(admin.ModelAdmin):
     search_fields = ('id', 'writer__username')
     search_help_text = '계시판 번호, 작성자 검색이 가능합니다'
 
+    def save_model(self, request, obj, form, change):
+        if not obj.writer:
+            obj.writer = request.user
+        obj.last_modifier = request.user
+        obj.save()
+
 
 class AnswerInline(admin.TabularInline):
     model = Answer
@@ -22,6 +28,12 @@ class InquiryModelAdmin(admin.ModelAdmin):
     
     search_fields = ('id', 'writer__username')
     search_help_text = '계시판 번호, 작성자 검색이 가능합니다'
+
+    def save_model(self, request, obj, form, change):
+        if not obj.writer:
+            obj.writer = request.user
+        obj.last_modifier = request.user
+        obj.save()
 
     inlines = [AnswerInline]
 

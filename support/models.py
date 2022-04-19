@@ -23,7 +23,7 @@ class Inquiry(models.Model):
         max_length=256, 
         choices=[('General', '일반'), ('Account', '계정') , ('Etc', '기타')]
     )
-    writer = models.ForeignKey(verbose_name = '생성자', to = User, on_delete  = models.CASCADE, null = True, blank = True)
+    writer = models.ForeignKey(verbose_name = '생성자', to = User, editable=False, on_delete  = models.CASCADE, null = True, blank = True)
     e_mail = models.CharField(max_length=256, verbose_name = '이메일 주소')
     phone_number = models.CharField(max_length=256, verbose_name = '전화번호')
     content = models.TextField(verbose_name = '문의')
@@ -34,8 +34,8 @@ class Inquiry(models.Model):
 class Answer(models.Model):
     inquiry = models.ForeignKey( verbose_name = '문의', to = Inquiry , on_delete = models.CASCADE, null = False, blank = False)
     content = models.TextField(verbose_name = '답변')
-    writer = models.ForeignKey(verbose_name = '답변자', to = User, on_delete  = models.CASCADE, null = True, blank = True )
-    last_modifier = models.ForeignKey(verbose_name = '최종 답변자', to = User, on_delete  = models.CASCADE, null = True, blank = True, related_name = 'last_answer_writer')
+    writer = models.ForeignKey(verbose_name = '답변자', to = User, editable=False, on_delete  = models.CASCADE, null = True, blank = True )
+    last_modifier = models.ForeignKey(verbose_name = '최종 답변자', to = User, editable = False, on_delete  = models.CASCADE, null = True, blank = True, related_name = 'last_answer_writer')
     created_at  = models.DateTimeField(verbose_name = '답변 일시' , auto_now_add = True)
     modifed_at  = models.DateTimeField(verbose_name = '최종 답변 일시' , auto_now = True)
 
